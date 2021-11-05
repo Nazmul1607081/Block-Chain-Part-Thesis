@@ -68,12 +68,12 @@
     <section>
         <div class="container">
             <h1 class="heading">
-                <%= data.dept %> Specialist
+                <%= data.department %> Specialist
             </h1>
 
             <% data.doctors.forEach((user)=>{ %>
 
-                %> <h2>
+                <h2>
                     <div class="card-wrapper">
                         <div class="card">
                             <img src="/image/136_medical-background-vector-l.jpg" alt="card-background"
@@ -82,23 +82,21 @@
                             <img alt="profile image" class="profile-img" src=" <%= user.image %>" />
 
                             <h1>
-                                <%= user.fname %>
-                                    <%= user.lname %>
+                                <%= user.name %>
                             </h1>
-                            <p class="job-title">experiience</p>
-                            <P class="about">
-                                <%= user.quality %>
-                            </P>
+
+
+                            <p class="job-title"> <%= user.qualification %></p>
+                            <p class="about"> <%= user.exprience %></p>
+
                             <p class="about2">
                                 <%= user.work_place %>
                             </P>
 
 
-                            <!-- <a id="myBtn" href="/appointment/?did=<%= user.uid %>&pid=<%=  data.pid %> "
-                                class="btn">Book
-                                Appointment</a> -->
-
-                            <button id="myBtn">Open Modal</button>
+                            <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>">
+                                <button class="btn btn-primary">Appointment</button>
+                            </a>
                             <ul class="social-media">
                                 <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
                                 <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>

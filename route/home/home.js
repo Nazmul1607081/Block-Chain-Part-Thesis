@@ -4,7 +4,6 @@ const router = express.Router();
 
 router.get('/', function (req, res) {
 
-
     const cookies = req.cookies;
     console.log(cookies);
 

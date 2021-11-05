@@ -1,46 +1,39 @@
-var express = require('express');
-var router = express.Router()
-const mongoose = require('mongoose')
-
-const Doctor = require('../../models/doctor');;
+const express = require('express');
+const router = express.Router();
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'medi'
+});
+;
 
 router.get('/', function (req, res) {
 
-    var dept = req.query.dept;
-    var pid = req.query.pid;
+    const department = req.query.department;
+    const userName = req.query.user_name;
 
-    console.log(dept)
+    console.log(department)
+    let doctors = [];
 
-    var doctors = [];
-
-    Doctor.find({
-        'department': dept
-
-    }, function (err, docs) {
-        if (err) {
-            res.render('error')
+    connection.query('SELECT * FROM `doctor` WHERE `department` = ?', [department], function (error, results, fields) {
+        if (error)
+            res.render(error);
+        else {
+            results.forEach((element) => {
+                doctors.push(element)
+            });
+            console.log(doctors)
+            res.render('doctors', {
+                data: {
+                    doctors: doctors,
+                    department: department.toUpperCase(),
+                    user_name: userName
+                }
+            })
         }
-        docs.forEach((element) => {
-            console.log(element.fname);
-            doctors.push(element)
-        });
-        console.log(doctors)
-        res.render('doctors', {
-            data: {
-                doctors: doctors,
-                dept: dept.toUpperCase(),
-                pid: pid
-            }
-        })
-        console.log('doctors')
     });
-
-    console.log(dept);
-
-
-
-
-
 })
 
 module.exports = router
