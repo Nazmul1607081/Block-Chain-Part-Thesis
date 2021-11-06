@@ -36,4 +36,22 @@ router.get('/', function (req, res) {
     });
 })
 
+
+router.get('/appointment', function (req, res) {
+
+    const department = req.query.department;
+    const userName = req.query.user_name;
+    const id = req.query.id;
+    const walletAddress = req.query.wallet_address;
+
+    res.render('appointment', {
+                data: {
+                    department: department,
+                    user_name: userName,
+                    id:id,
+                    walletAddress:walletAddress
+                }
+            });
+})
+
 module.exports = router

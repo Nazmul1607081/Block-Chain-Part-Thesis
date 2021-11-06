@@ -5,8 +5,9 @@ var router = express.Router()
 
 
 router.get('/', function (req, res) {
-    var did = req.query.did;
-    var pid = req.query.pid;
+    const did = req.query.did;
+    const pid = req.query.pid;
+    console.log('appointment')
     res.render('appointment', {
         data: {
             pid: pid,

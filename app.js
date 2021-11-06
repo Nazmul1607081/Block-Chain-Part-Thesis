@@ -39,6 +39,7 @@ const appointment = require('./route/appointment/appointment');
 const login = require('./route/login/login');
 const signup = require('./route/signup/signup');
 const logout = require('./route/logout/logout');
+const advice = require('./route/advice/advice');
 
 app.set('view engine', 'ejs')
 
@@ -48,6 +49,7 @@ app.use('/signup', signup)
 app.use('/doctors', doctor)
 app.use('/logout', logout)
 app.use('/appointment', appointment)
+app.use('/advice', advice)
 
 
 app.get('/', (req, res) => {

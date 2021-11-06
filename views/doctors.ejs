@@ -78,23 +78,16 @@
                         <div class="card">
                             <img src="/image/136_medical-background-vector-l.jpg" alt="card-background"
                                 class="card-img">
-
                             <img alt="profile image" class="profile-img" src=" <%= user.image %>" />
-
                             <h1>
                                 <%= user.name %>
                             </h1>
-
-
                             <p class="job-title"> <%= user.qualification %></p>
                             <p class="about"> <%= user.exprience %></p>
-
                             <p class="about2">
                                 <%= user.work_place %>
                             </P>
-
-
-                            <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>">
+                            <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>&wallet_address=<%=user.wallet_address%>">
                                 <button class="btn btn-primary">Appointment</button>
                             </a>
                             <ul class="social-media">

@@ -25,7 +25,11 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage, limits: 1024 * 1024 * 5});
 
 
+
+
+
 router.get('/doctor', function (req, res) {
+
     res.render('signup')
 
 })
@@ -35,17 +39,22 @@ router.get('/patient', function (req, res) {
 
 router.post('/doctor', upload.single('imagefile'), function (req, res) {
 
+
+
+
     let userName = req.body.user_name
     let name = req.body.name
     let workPlace = req.body.work_place
     let qualification = req.body.qualification
-    let experience = req.body.experience
+    let experience = req.body.exprience
     let department = req.body.department
     let walletAddress = req.body.wallet_address
     let gender = req.body.gender
-    let image = 'http://localhost:3000/' + req.file.path
+    //let image = 'http://localhost:3000/' + req.file.path
 
-    connection.query('SELECT * FROM `doctor` WHERE `user_name` = ?', [userName], function (error, results, fields) {
+    console.log(req.body)
+
+    /*connection.query('SELECT * FROM `doctor` WHERE `user_name` = ?', [userName], function (error, results, fields) {
         if (error) {
             res.send(error);
         }
@@ -73,7 +82,7 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
                 }
             });
         }
-    });
+    });*/
 })
 
 
