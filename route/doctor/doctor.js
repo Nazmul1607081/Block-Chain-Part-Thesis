@@ -44,6 +44,8 @@ router.get('/appointment', function (req, res) {
     const id = req.query.id;
     const walletAddress = req.query.wallet_address;
 
+    res.cookie('id', id);
+
     res.render('appointment', {
                 data: {
                     department: department,

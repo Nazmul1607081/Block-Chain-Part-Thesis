@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/signup.css">
+    <link rel="stylesheet" href="/css/appointment.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -37,35 +37,40 @@
                 <h2 style="color: black">Appointment</h2>
             </div>
             <div class="form-body">
-                <form action="/signup/doctor" method="POST" enctype="multipart/form-data">
+                <form action="/appointment" method="POST" enctype="multipart/form-data">
                     <div class="row form-row">
                         <label>Contact Information</label>
                         <span>
-                                <input type="text" name="name" placeholder="Enter Your First Name"
-                                       class="form-control">
+                                <input type="text" name="contact" placeholder="Contact Information" multiple
+                                        class="form-control">
                             </span>
                     </div>
                     <div class="row form-row">
                         <label>Details of your problem </label>
                         <span>
-                                <input type="text" name="user_name" placeholder="Enter Your User ID"
+                                <input type="text" name="details" placeholder="Details of your problem "
                                        class="form-control">
                             </span>
                     </div>
 
+                    <div class="row form-row">
+                        <label>Cloud Address </label>
+                        <span>
+                                <input type="text" name="cloud_address" placeholder="Give your Cloud Address here"
+                                       class="form-control">
+                            </span>
+                    </div>
 
                     <div class="row form-row float-md-none">
-                            <span><input type="file" name="imagefile" class="form-control border"
+                            <span><input type="file" name="imagefile" class="form-control-file border"
                                          id="input-files"/></span>
                     </div>
 
                     <div class="row form-row">
                         <div class="col-sm-12">
-
                             <div class="preview-images"></div>
                         </div>
                     </div>
-
 
                     <input type="submit" value="SUBMIT">
                 </form>
