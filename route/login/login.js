@@ -37,6 +37,7 @@ router.post('/', function (req, res) {
                         res.cookie('user_name', req.body.user_name);
                         res.cookie('isLogin', true);
                         res.cookie('user_type', userType);
+                        res.cookie('id', results[0].id);
                         console.log("SUCCESSFUL");
                         res.redirect('/home');
                     } else {

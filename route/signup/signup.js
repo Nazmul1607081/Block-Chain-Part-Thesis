@@ -41,7 +41,7 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
     let name = req.body.name
     let workPlace = req.body.work_place
     let qualification = req.body.qualification
-    let experience = req.body.exprience
+    let experience = req.body.experience
     let department = req.body.department
     let walletAddress = req.body.wallet_address
     let gender = req.body.gender
@@ -66,9 +66,11 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
                                 res.send(insertError)
                             }
                             console.log('User Created Successfully');
+                            console.log(insertResult)
                             res.cookie('user_name', userName);
                             res.cookie('isLogin', true);
                             res.cookie('user_type', 'doctor');
+                            res.cookie('id', insertResult.insertId)
                             res.redirect('/home');
 
                         })

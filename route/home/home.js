@@ -9,6 +9,11 @@ router.get('/', function (req, res) {
 
     if (cookies.isLogin === 'true') {
 
+        if(cookies.user_type=="doctor")
+        {
+            res.cookie('id', cookies.id);
+        }
+
         res.render('home', {
             data: {
                 user_name: cookies.user_name,
