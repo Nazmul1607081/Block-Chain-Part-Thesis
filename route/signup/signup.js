@@ -3,7 +3,13 @@ const router = express.Router();
 const mongoose = require('mongoose')
 const multer = require('multer');
 const bcrypt = require('bcrypt');
+const NodeRSA = require('node-rsa');
+const key = new NodeRSA({b: 512});
 const mysql = require('mysql');
+
+let walletAddress = key.exportKey('public')
+let privateKey = key.exportKey('private')
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -27,7 +33,12 @@ const upload = multer({storage: storage, limits: 1024 * 1024 * 5});
 
 router.get('/doctor', function (req, res) {
 
-    res.render('signup')
+    res.render('signup',
+        {
+            data: {
+                wallet_address: walletAddress,
+                private_key:privateKey
+            }})
 
 })
 router.get('/patient', function (req, res) {
@@ -43,9 +54,10 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
     let qualification = req.body.qualification
     let experience = req.body.experience
     let department = req.body.department
-    let walletAddress = req.body.wallet_address
+
     let gender = req.body.gender
     let image = 'http://localhost:3000/' + req.file.path
+
 
     connection.query('SELECT * FROM `doctor` WHERE `user_name` = ?', [userName], function (error, results, fields) {
         if (error) {
@@ -71,6 +83,7 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
                             res.cookie('isLogin', true);
                             res.cookie('user_type', 'doctor');
                             res.cookie('id', insertResult.insertId)
+                            res.cookie('wallet_address', walletAddress)
                             res.redirect('/home');
 
                         })
@@ -86,6 +99,7 @@ router.post('/patient', function (req, res) {
     let userName = req.body.user_name
     let name = req.body.name
     let gender = req.body.gender
+
 
     connection.query('SELECT * FROM `patient` WHERE `user_name` = ?', [userName], function (error, results, fields) {
         if (error) {
@@ -110,7 +124,6 @@ router.post('/patient', function (req, res) {
                             res.cookie('isLogin', true);
                             res.cookie('user_type', 'patient');
                             res.redirect('/home');
-
                         })
                 }
             });

@@ -1,0 +1,25 @@
+pragma solidity ^0.5.0;
+
+contract MediChain{
+
+    address ownerAddress;
+    mapping (string=>string) public data;
+
+    constructor()public {
+        ownerAddress = msg.sender;
+    }
+
+    modifier validityOfOwner{
+        require(msg.sender==ownerAddress);
+        _;
+    }
+
+    function setData(string memory addr,string memory _data)public{
+        data[addr] = _data;
+    }
+
+    function getData(string memory addr) public view  returns (string memory) {
+        return data[addr];
+    }
+
+}

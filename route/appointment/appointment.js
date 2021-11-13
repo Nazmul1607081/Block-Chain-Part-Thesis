@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const mysql = require('mysql');
 
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -22,9 +23,11 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage, limits: 1024 * 1024 * 5});
 
 
-router.get('/', function (req, res) {
+/*router.get('/', function (req, res) {
+    ///not work
     const id = req.query.id;
     const userName = req.query.user_name;
+
     res.cookie('id', id);
     res.render('appointment', {
         data: {
@@ -33,7 +36,7 @@ router.get('/', function (req, res) {
         }
     })
 
-})
+})*/
 
 router.post('/', upload.single('imagefile'), function (req, res) {
     let contact = req.body.contact;
@@ -44,7 +47,14 @@ router.post('/', upload.single('imagefile'), function (req, res) {
     let userName = req.cookies.user_name;
     let id = req.cookies.id;
 
-    if (userType == 'doctor') {
+
+
+    if((contact===undefined||contact==="")||(details===undefined||details==="")||(cloudAddress===undefined||cloudAddress===""))
+        res.redirect(req.get('host'));
+
+    console.log('ok')
+
+    if (userType === 'doctor') {
         connection.query('SELECT * FROM `doctor` WHERE `user_name` = ?', [userName], function (error, results, fields) {
             if (error) {
                 res.send(error)
@@ -57,7 +67,7 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                         if (insertError) {
                             res.send(insertError)
                         }
-                        res.cookie('', userName);
+                        res.cookie('user_name', userName);
                         res.cookie('isLoguser_namein', true);
                         res.cookie('user_type', 'patient');
                         connection.query('INSERT INTO `appointment` (`user_name`, `id`, `time`, `details`, `contact`) VALUES (?, ?, ?, ?, ?);',
@@ -67,7 +77,10 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                                     res.send(appointmentError)
                                 }
                                 ///TODO:: store cloud address hashed in the block chain
-                                res.redirect('/home')
+
+                                if (storeCloudAddressToBlockChain(cloudAddress)) {
+                                    res.redirect('/home')
+                                }
                             })
 
                     })
@@ -84,11 +97,23 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                     res.send(appointmentError)
                 }
                 ///TODO:: store cloud address hashed in the block chain
-                res.redirect('/home')
+                if (storeCloudAddressToBlockChain(cloudAddress)) {
+                    res.redirect('/home')
+                }
+
             })
     }
 
 
 })
+
+
+function storeCloudAddressToBlockChain(cloudAddress) {
+
+    let success = true;
+
+    return success;
+
+}
 
 module.exports = router

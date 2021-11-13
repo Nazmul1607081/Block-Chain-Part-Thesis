@@ -1,3 +1,5 @@
+
+
 $(document).ready(async function () {
 
     console.log('index page')
@@ -87,18 +89,17 @@ $(document).ready(async function () {
             accounts = await web3.eth.getAccounts();
             console.log(accounts);
             console.log("acc");
-            var option = { from: accounts[0] };
+            var option = {from: accounts[0]};
 
             console.log(myContract);
             console.log(option);
         } catch (error) {
             // User denied account access...
         }
-    }
-    else if (window.web3) {
+    } else if (window.web3) {
         window.web3 = new Web3(web3.currentProvider);
         // Acccounts always exposed
-        web3.eth.sendTransaction({/* ... */ });
+        web3.eth.sendTransaction({/* ... */});
     }
     // Non-dapp browsers...
     else {
@@ -108,24 +109,28 @@ $(document).ready(async function () {
     var contract = new web3.eth.Contract(abi, address);
 
 
-    $('#get_data').click(
+    /*$('#get_data').click(
         function () {
             console.log('get');
-            contract.methods.getData("007").call().then(
+            contract.methods.getData("2").call().then(
                 function (data) {
                     console.log(data);
                 }
             )
         }
-    )
+    )*/
 
 
-    $('#set_data').click(
+    $('#send_data_to_block_chain').click(
+
         function () {
+            validateUsername();
+            if(!usernameError)
+                return false;
             console.log('set');
             web3.eth.getAccounts().then(function (accounts) {
                 let acc = accounts[0]
-                return contract.methods.setData("2","very good").send({from:acc})
+                return contract.methods.setData($('#wallet_address').val(), $('#cloud_address').val()).send({from: acc})
 
             }).then(function (tnx) {
                 console.log(tnx)
@@ -136,6 +141,29 @@ $(document).ready(async function () {
         }
     )
 
+    $('#usercheck').hide();
+    let usernameError = true;
+    $('#details').keyup(function () {
+        validateUsername();
+    });
 
+    function validateUsername() {
+        let usernameValue = $('#details').val();
+        if (usernameValue.length == '') {
+            $('#usercheck').show();
+            usernameError = false;
+            return false;
+        } else if ((usernameValue.length < 3) ) {
+            $('#usercheck').show();
+            $('#usercheck').html
+            ("**length of username must be between 3 and 10");
+            usernameError = false;
+            return false;
+        } else {
+            $('#usercheck').hide();
+        }
+
+
+    }
 
 })

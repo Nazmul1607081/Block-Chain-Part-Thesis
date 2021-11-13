@@ -2,6 +2,8 @@ const express = require('express')
 const cookie_parser = require('cookie-parser')
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const NodeRSA = require('node-rsa');
+const key = new NodeRSA({b: 512});
 
 const mysql = require('mysql');
 const connection = mysql.createConnection({
@@ -61,6 +63,34 @@ app.get('/', (req, res) => {
 
 app.get('/error', (req, res) => {
     res.render('server_error')
+})
+
+app.get('/test', (req, res) => {
+
+    let privateKey = key.exportKey('private')
+    let publicKey = key.exportKey('public')
+
+    let privateKeyObj = new NodeRSA(privateKey);
+    let publicKeyObj =  new NodeRSA(publicKey);
+
+    let data = "Bangladesh";
+    let encryptedData = publicKeyObj.encrypt(data);
+    let decryptedData = privateKeyObj.decrypt(encryptedData,'utf8')
+    let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+    //let privateKeyFromPublicKey = publicKeyObj.exportKey('private')
+
+
+
+    //console.log(privateKey);
+    //console.log(publicKey);
+    console.log(data)
+    console.log(encryptedData)
+    console.log(decryptedData)
+    //console.log(publicKeyFromPrivateKey)
+    //console.log(privateKeyFromPublicKey)
+
+
+    res.send('Testing')
 })
 
 app.listen(port, () => console.log(`App listening on the port ${port}`))

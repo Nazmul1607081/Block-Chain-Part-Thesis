@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/appointment.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 
 </head>
 
@@ -28,7 +28,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
-<script src="/js/signup.js"></script>
+<script src="/js/appointment.js"></script>
 
 <div class="signup">
     <div class="col-sm-5">
@@ -41,14 +41,14 @@
                     <div class="row form-row">
                         <label>Contact Information</label>
                         <span>
-                                <input type="text" name="contact" placeholder="Contact Information" multiple
-                                        class="form-control">
+                                <input type="text" id="contact" name="contact" placeholder="Contact Information" multiple
+                                       class="form-control">
                             </span>
                     </div>
                     <div class="row form-row">
                         <label>Details of your problem </label>
                         <span>
-                                <input type="text" name="details" placeholder="Details of your problem "
+                                <input type="text"  id="details" name="details" placeholder="Details of your problem "
                                        class="form-control">
                             </span>
                     </div>
@@ -56,7 +56,7 @@
                     <div class="row form-row">
                         <label>Cloud Address </label>
                         <span>
-                                <input type="text" name="cloud_address" placeholder="Give your Cloud Address here"
+                                <input type="text" id="cloud_address" name="cloud_address" placeholder="Give your Cloud Address here"
                                        class="form-control">
                             </span>
                     </div>
@@ -72,7 +72,17 @@
                         </div>
                     </div>
 
-                    <input type="submit" value="SUBMIT">
+
+
+                    <h5 id="usercheck" style="color: red;">
+                        **Username is missing
+                    </h5>
+
+                    <div class="row form-row float-md-none">
+                            <span><input type="hidden" id="wallet_address" value="<%= data.wallet_address %>"/></span>
+                    </div>
+
+                    <input id="send_data_to_block_chain" type="submit" value="SUBMIT">
                 </form>
             </div>
         </div>

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
+const Web3 = require('web3');
+
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -47,13 +49,13 @@ router.get('/appointment', function (req, res) {
     res.cookie('id', id);
 
     res.render('appointment', {
-                data: {
-                    department: department,
-                    user_name: userName,
-                    id:id,
-                    walletAddress:walletAddress
-                }
-            });
+        data: {
+            department: department,
+            user_name: userName,
+            id: id,
+            walletAddress: walletAddress
+        }
+    });
 })
 
 module.exports = router
