@@ -1,14 +1,29 @@
 const express = require('express')
 const router = express.Router()
-const app = express()
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
+const Web3 = require('web3');
+const NodeRSA = require("node-rsa");
+const Firebase = require('firebase')
+const key = new NodeRSA({b: 512});
+
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
     password: process.env.SQL_PASSWORD,
     database: process.env.SQL_DB_NAME
 });
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAGWCTeMiFUG2c1sKdbUEZB5zhGTLawXQs",
+    authDomain: "medichain-e0025.firebaseapp.com",
+    databaseURL: "https://medichain-e0025.firebaseio.com",
+    projectId: "medichain-e0025",
+    storageBucket: "medichain-e0025.appspot.com",
+    messagingSenderId: "444071301435",
+    appId: "1:444071301435:web:867a53d6663e828e8f671e",
+    measurementId: "G-T57GVVFM1Z"
+};
 
 
 router.get('/', function (req, res) {
@@ -17,18 +32,32 @@ router.get('/', function (req, res) {
     const id = req.cookies.id;
     const userType = cookies.user_type
     const userName = cookies.user_name
+    const walletAddress = cookies.wallet_address
 
     console.log(cookies)
 
     if (cookies.isLogin === 'true') {
         if (userType === 'doctor') {
-            connection.query('SELECT * FROM appointment LEFT JOIN advice ON appointment.appointment_id=advice.appointment_id WHERE appointment.id=?', [id],
-                function (error, results, fields) {
+
+            const privateKey =  cookies.private_key
+            let privateKeyObj = new NodeRSA(privateKey);
+            let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+            console.log(publicKeyFromPrivateKey)
+            //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+            connection.query('SELECT * FROM  appointment WHERE id=?', [id],
+                async function (error, results, fields) {
                     console.log('results')
                     console.log(results)
                     if (error)
                         res.render(error);
                     else {
+
+                       /* results.forEach((res) => {
+                            let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+                        })*/
+
+                        //const cyperDataFromCloud = await getDataFromBlockChain(walletAddress)
+
                         res.render('advice', {
                             data: {
                                 user_name: cookies.user_name,
@@ -40,7 +69,7 @@ router.get('/', function (req, res) {
                     }
                 });
         } else {
-            connection.query('SELECT * FROM appointment LEFT JOIN advice ON appointment.appointment_id=advice.appointment_id WHERE appointment.user=?', [userName],
+            connection.query('SELECT * FROM  appointment WHERE user_name=?', [userName],
                 function (error, results, fields) {
                     if (error)
                         res.render(error);
@@ -60,13 +89,119 @@ router.get('/', function (req, res) {
     } else {
         res.redirect('/login')
     }
+})
 
+router.post('/', function (req, res) {
+    const appoint_id = req.query.aid;
+    const advice = req.body.advice;
+    connection.query('UPDATE appointment SET advice=? WHERE appointment_id=?', [advice, appoint_id], function (error, results, fields) {
+        if (error) {
+            res.send(error);
+        } else {
+            res.redirect('/advice')
+        }
+    });
 
 })
 
-router.post('/advice', function (req, res) {
 
-})
+function getDataFromBlockChain(walletAddresss) {
+    const app = Firebase.initializeApp(firebaseConfig)
+    const db = app.firestore()
+    const web3 = new Web3(process.env.WEB3_PORT_ADDRESS)
+    const deplyedABI = [
+        {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "name": "data",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "addr",
+                    "type": "string"
+                }
+            ],
+            "name": "getData",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "addr",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_data",
+                    "type": "string"
+                }
+            ],
+            "name": "setData",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ];
+    const deplyedAddress = process.env.DEPLOYED_ADDRESS;
+
+    const contract = new web3.eth.Contract(
+        deplyedABI, deplyedAddress
+    );
+
+    contract.methods.getData(walletAddresss.toString().split('\n')[2]).call().then(
+        async function (doc) {
+            console.log('data');
+            console.log(doc);
+            const cyperSnapshot = await db.collection('cyper').get()
+            const cyperList = cyperSnapshot.docs.map(doc => doc.data());
+            cyperList.find((cyper,index)=>{
+                if(cyper.doc===doc)
+                {
+                    console.log(cyper.encrypted_data)
+                    return cyper.encrypted_data
+                }
+            })
+            //console.log(cyperList)
+        }
+    )
+}
 
 
 module.exports = router

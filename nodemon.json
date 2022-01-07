@@ -80,6 +80,17 @@
 ],
     "WEB3_PORT_ADDRESS": "HTTP://127.0.0.1:7545",
     "TEST_DOCTOR_PRIVATE_ADDRESS": "-----BEGIN RSA PRIVATE KEY-----MIIBOQIBAAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQJAAKPKOn2WDXZ6e3aFiXsn+n1nRXVSLdiM1R+kyYB+LAcN3SQyV+QFkmII6pxEsW+ePRuPeq0yhBTu0k0r43fxgQIhAPkjzylR96UUYdvHIyzKX5AsjBy64+TUgpx9dydE4jYLAiEAlZosF8IS68KJ7CPrqrSmqDq7RIEtYhGYvE6mNZnHxp8CIDSHglRZ/fcGdyOZtybofIGvgtND7G0BCZDpO0hCU9fFAiBPtJ2LZu43yCU9uAGmqKsmdGwz2nM4jdGHeovZgP5MVwIgEXkShiRr9XKdx/ELhRGLqCrni2tpMD9Zr+iQrrYWjBQ=-----END RSA PRIVATE KEY-----",
-    "TEST_PATIENT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQ==-----END PUBLIC KEY-----"
+    "TEST_PATIENT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQ==-----END PUBLIC KEY-----",
+     "FIREBASE_CONFIG": {
+    "apiKey": "AIzaSyAGWCTeMiFUG2c1sKdbUEZB5zhGTLawXQs",
+    "authDomain": "medichain-e0025.firebaseapp.com",
+    "databaseURL": "https://medichain-e0025.firebaseio.com",
+    "projectId": "medichain-e0025",
+    "storageBucket": "medichain-e0025.appspot.com",
+    "messagingSenderId": "444071301435",
+    "appId": "1:444071301435:web:867a53d6663e828e8f671e",
+    "measurementId": "G-T57GVVFM1Z"
+}
+
   }
 }

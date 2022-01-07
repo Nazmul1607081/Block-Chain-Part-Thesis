@@ -18,8 +18,7 @@ const firebaseConfig = {
     appId: "1:444071301435:web:867a53d6663e828e8f671e",
     measurementId: "G-T57GVVFM1Z"
 };
-const app = Firebase.initializeApp(firebaseConfig)
-const db = app.firestore()
+
 
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
@@ -125,6 +124,9 @@ router.post('/', upload.single('imagefile'), function (req, res) {
 
 
 async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
+
+    const app = Firebase.initializeApp(firebaseConfig)
+    const db = app.firestore()
 
     let success = false;
     let publicKeyObj = new NodeRSA(walletAddress);
@@ -237,14 +239,5 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
 
 }
 
-
-async function saveDataToFirebase(encryptedData) {
-    await db.collection('cyper').add({
-        'encrypted_data': encryptedData,
-    }).then((doc) => {
-        console.log(doc.path)
-        return doc.path.split('/')[1];
-    })
-}
 
 module.exports = router

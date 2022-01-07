@@ -44,9 +44,15 @@
                 </li>
                 <% if(data.user_type === 'doctor'){ %>
                     <li class="nav-item">
+                        <button onclick="showPrivetKeyAlert()" class="nav-link">Advice</button>
+                    </li>
+                <% } else{
+                %>
+                    <li class="nav-item">
                         <a href="/advice" class="nav-link">Advice</a>
                     </li>
-                <% } %>
+                <%
+                } %>
 
                 <li class="nav-item">
                     <a href="/logout" class="nav-link">Logout (<%= data.user_name %> )</a>

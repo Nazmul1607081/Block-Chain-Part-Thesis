@@ -34,26 +34,48 @@
             <div class="form-head">
                 <h2 style="color: black">Advice</h2>
             </div>
-            <div>
-                <% data.advice.forEach((adv)=>{
-                %>
-                    <h1>
-                        <%= adv.details %>
-                    </h1>
-                <form action="/advice/?user=<%=adv.user_name%>" method="POST">
-                    <div class="row form-row">
-                        <label>Advice: </label>
-                        <span>
-                                <input type="text" name="advice" value="<%=adv.advice%>" placeholder="Give Advice"
+            <% if( data.user_type === 'doctor') {
+            %>
+                <div>
+                    <% data.advice.forEach((adv)=>{
+                    %>
+                        <h3>
+                            <%= adv.details %>
+                        </h3>
+                        <form action="/advice/?aid=<%= adv.appointment_id %>" method="POST">
+                            <div class="row form-row">
+                                <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+                                <label>Advice: </label>
+                                <span>
+                                <input type="text" name="advice" value="<%= adv.advice %>" placeholder="Give Advice"
                                        class="form-control">
                             </span>
-                    </div>
+                                <input type="submit" value="GO">
+                            </div>
 
-                    <input type="submit" value="GO">
-                </form>
+
+                        </form>
+                    <%
+                    }) %>
+                </div>
+            <%
+            }else{
+            %>
+                <div>
+                <% data.advice.forEach((adv)=>{
+                %>
+                    <h3>
+                        <%= adv.details %>
+                        <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+                    </h3>
+                    <h3>
+                        <%= adv.advice %>
+                    </h3>
                 <%
                 }) %>
             </div>
+            <%
+            } %>
         </div>
     </div>
 </div>

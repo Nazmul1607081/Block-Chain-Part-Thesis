@@ -38,3 +38,14 @@ const filterList = searchTerm => {
         }
     });
 };
+
+function showPrivetKeyAlert(){
+    let privateKey = prompt('Private Key');
+    document.cookie =  "private_key="+privateKey
+    if(privateKey!=null)
+    {
+         window.location.href = '/advice'
+    }
+
+
+}
