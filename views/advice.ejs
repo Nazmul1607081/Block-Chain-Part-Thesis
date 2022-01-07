@@ -32,50 +32,10 @@
     <div class="col-sm-5">
         <div class="form-data">
             <div class="form-head">
-                <h2 style="color: black">Advice</h2>
+                <h2 style="color: black">ADVICE</h2>
+                <h3 style="color: black">Doctor</h3>
             </div>
-            <% if( data.user_type === 'doctor') {
-            %>
-                <div>
-                    <% data.advice.forEach((adv)=>{
-                    %>
-                        <h3>
-                            <%= adv.details %>
-                        </h3>
-                        <form action="/advice/?aid=<%= adv.appointment_id %>" method="POST">
-                            <div class="row form-row">
-                                <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
-                                <label>Advice: </label>
-                                <span>
-                                <input type="text" name="advice" value="<%= adv.advice %>" placeholder="Give Advice"
-                                       class="form-control">
-                            </span>
-                                <input type="submit" value="GO">
-                            </div>
 
-
-                        </form>
-                    <%
-                    }) %>
-                </div>
-            <%
-            }else{
-            %>
-                <div>
-                <% data.advice.forEach((adv)=>{
-                %>
-                    <h3>
-                        <%= adv.details %>
-                        <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
-                    </h3>
-                    <h3>
-                        <%= adv.advice %>
-                    </h3>
-                <%
-                }) %>
-            </div>
-            <%
-            } %>
         </div>
     </div>
 </div>
