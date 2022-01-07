@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <title>Registration as Doctor</title>
@@ -94,20 +94,7 @@
                             </span>
                         <br><br>
                     </div>
-                    <div class="row form-row">
-                        <label>Wallet Address: </label>
-                        <span>
-                                <h5>
-                                    <%= data.wallet_address %>
-                                </h5>
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Private Key: </label>
-                        <<h5>
-                            <%= data.private_key %>
-                        </h5>
-                    </div>
+
 
                     <div class="row form-row float-md-none">
                             <span><input type="file" name="imagefile" class="form-control border"
@@ -128,6 +115,17 @@
                     <label class="label1" for="female">Female</label><br>
                     <input type="submit" value="SIGNUP">
                 </form>
+                <hr>
+                <div class="row form-row">
+                    <label for="walletAddress">Wallet Address: </label><input id="walletAddress" hidden
+                                                                              value="<%= data.wallet_address %>">
+                    <button onclick="copyText('walletAddress')">Copy text</button>
+                </div>
+                <div class="row form-row">
+                    <label for="private_key">Private Key: </label><input id="private_key" hidden
+                                                                         value="<%= data.private_key %>">
+                    <button onclick="copyText('private_key')">Copy text</button>
+                </div>
             </div>
         </div>
     </div>

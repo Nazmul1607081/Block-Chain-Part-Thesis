@@ -32,102 +32,27 @@
     <div class="col-sm-5">
         <div class="form-data">
             <div class="form-head">
-                <h2 style="color: black">Appointment</h2>
+                <h2 style="color: black">Advice</h2>
             </div>
-            <div class="form-body">
-                <form action="/signup/doctor" method="POST" enctype="multipart/form-data">
+            <div>
+                <% data.advice.forEach((adv)=>{
+                %>
+                    <h1>
+                        <%= adv.details %>
+                    </h1>
+                <form action="/advice/?user=<%=adv.user_name%>" method="POST">
                     <div class="row form-row">
-                        <label>Name: </label>
+                        <label>Advice: </label>
                         <span>
-                                <input type="text" name="name" placeholder="Enter Your First Name"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>User Name: </label>
-                        <span>
-                                <input type="text" name="user_name" placeholder="Enter Your User ID"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Password: </label>
-                        <span>
-                                <input type="password" name="password" placeholder="Enter Your Password"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Workplace:</label>
-                        <span>
-                                <input type="text" name="work_place" placeholder="Enter Your Workplace"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Qualification:</label>
-                        <span>
-                                <input type="text" name="qualification" placeholder="Enter Your Qualification"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Experience:</label>
-                        <span>
-                                <input type="text" name="experience" placeholder="Enter Your Experience"
-                                       class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Choose your Department:</label>
-                        <span>
-                                <select name="department" class="form-control">
-                                    <option value="dental">Dental</option>
-                                    <option value="surgery">Surgery</option>
-                                    <option value="medicine">Medicine</option>
-                                    <option value="ent">ENT</option>
-                                    <option value="heart">Heart</option>
-                                    <option value="skin">Skin</option>
-                                </select>
-                            </span>
-                        <br><br>
-                    </div>
-                    <div class="row form-row">
-                        <label>Wallet Address: </label>
-                        <span>
-                                <input type="text" name="wallet_address" placeholder="Enter Your Wallet Address"
-                                       disabled
-                                       value="ADDRLLS(BFLO" class="form-control">
-                            </span>
-                    </div>
-                    <div class="row form-row">
-                        <label>Private Key: </label>
-                        <span>
-                                <input type="text" name="private_address"
-                                       placeholder="Please copy and save this private key" disabled
+                                <input type="text" name="advice" value="<%=adv.advice%>" placeholder="Give Advice"
                                        class="form-control">
                             </span>
                     </div>
 
-                    <div class="row form-row float-md-none">
-                            <span><input type="file" name="imagefile" class="form-control border"
-                                         id="input-files"/></span>
-                    </div>
-
-                    <div class="row form-row">
-                        <div class="col-sm-12">
-
-                            <div class="preview-images"></div>
-                        </div>
-                    </div>
-
-                    <label class="label">Gender :</label>
-                    <input type="radio" name="gender" id="male" value="male" checked>
-                    <label class="label1" for="male">Male</label>
-                    <input type="radio" name="gender" id="female" value="female">
-                    <label class="label1" for="female">Female</label><br>
-                    <input type="submit" value="SIGNUP">
+                    <input type="submit" value="GO">
                 </form>
+                <%
+                }) %>
             </div>
         </div>
     </div>

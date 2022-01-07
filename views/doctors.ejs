@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/main.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/a8a8a17def.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -20,104 +20,103 @@
 <body>
 
 
-    <!--nav bar-->
+<!--nav bar-->
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-        </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-        </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-        </script>
+</script>
 
 
-    <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
 
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks the button, open the modal 
-        btn.onclick = function () {
-            console.log("Btn clk")
-            modal.style.display = "block";
-        }
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        console.log("Btn clk")
+        modal.style.display = "block";
+    }
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
+</script>
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
+<section>
+    <div class="container">
+        <h1 class="heading">
+            <%= data.department %> Specialist
+        </h1>
 
-    <section>
-        <div class="container">
-            <h1 class="heading">
-                <%= data.department %> Specialist
-            </h1>
+        <% data.doctors.forEach((user)=>{ %>
 
-            <% data.doctors.forEach((user)=>{ %>
+            <h2>
+                <div class="card-wrapper">
+                    <div class="card">
+                        <img src="/image/136_medical-background-vector-l.jpg" alt="card-background"
+                             class="card-img">
+                        <img alt="profile image" class="profile-img" src=" <%= user.image %>"/>
+                        <h1>
+                            <%= user.name %>
+                        </h1>
+                        <p class="job-title"> <%= user.qualification %></p>
+                        <p class="about"> <%= user.exprience %></p>
+                        <p class="about2">
+                            <%= user.work_place %>
+                        </P>
+                        <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>">
+                            <button class="btn btn-primary">Appointment</button>
+                        </a>
+                        <ul class="social-media">
+                            <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-google-plus-square"></i></a></li>
+                        </ul>
 
-                <h2>
-                    <div class="card-wrapper">
-                        <div class="card">
-                            <img src="/image/136_medical-background-vector-l.jpg" alt="card-background"
-                                class="card-img">
-                            <img alt="profile image" class="profile-img" src=" <%= user.image %>" />
-                            <h1>
-                                <%= user.name %>
-                            </h1>
-                            <p class="job-title"> <%= user.qualification %></p>
-                            <p class="about"> <%= user.exprience %></p>
-                            <p class="about2">
-                                <%= user.work_place %>
-                            </P>
-                            <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>">
-                                <button class="btn btn-primary">Appointment</button>
-                            </a>
-                            <ul class="social-media">
-                                <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
-                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fab fa-google-plus-square"></i></a></li>
-                            </ul>
-
-                        </div>
                     </div>
+                </div>
 
-                </h2>
+            </h2>
 
-
-                <% }) %>
-
-
-    </section>
-
-    <!-- modal dialog -->
-    <div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
-        </div>
+        <% }) %>
 
     </div>
+</section>
+
+<!-- modal dialog -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+    </div>
+
+</div>
 </body>
 
 </html>

@@ -12,10 +12,10 @@ let privateKey = key.exportKey('private')
 
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'medi'
+    host: process.env.SQL_HOST_NAME,
+    user: process.env.SQL_USER_NAME,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DB_NAME
 });
 
 
@@ -33,16 +33,17 @@ const upload = multer({storage: storage, limits: 1024 * 1024 * 5});
 
 router.get('/doctor', function (req, res) {
 
-    res.render('signup',
+    res.render('doctor_signup',
         {
             data: {
                 wallet_address: walletAddress,
-                private_key:privateKey
-            }})
+                private_key: privateKey
+            }
+        })
 
 })
 router.get('/patient', function (req, res) {
-    res.render('signup1')
+    res.render('patient_signup')
 })
 
 router.post('/doctor', upload.single('imagefile'), function (req, res) {
@@ -56,7 +57,7 @@ router.post('/doctor', upload.single('imagefile'), function (req, res) {
     let department = req.body.department
 
     let gender = req.body.gender
-    let image = 'http://localhost:3000/' + req.file.path
+    let image = process.env.HOST+(process.env.PORT|3000)+"/" + req.file.path
 
 
     connection.query('SELECT * FROM `doctor` WHERE `user_name` = ?', [userName], function (error, results, fields) {
@@ -123,6 +124,7 @@ router.post('/patient', function (req, res) {
                             res.cookie('user_name', userName);
                             res.cookie('isLogin', true);
                             res.cookie('user_type', 'patient');
+                            res.cookie('wallet_address', walletAddress)
                             res.redirect('/home');
                         })
                 }

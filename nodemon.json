@@ -1,6 +1,85 @@
 {
-    "env": {
-        "MONGO_ATLAS_PW": "nazmul81",
-        "JWT_PRIVATE_KEY": "secret"
-    }
+  "env": {
+    "MONGO_ATLAS_PW": "nazmul81",
+    "JWT_PRIVATE_KEY": "secret",
+    "HOST": "http://localhost:",
+    "SQL_PASSWORD": 1234,
+    "SQL_USER_NAME": "root",
+    "SQL_DB_NAME": "medi",
+    "SQL_HOST_NAME": "localhost",
+    "DEPLOYED_ADDRESS": "0x722E777E784B6e6A7c2Ed2f45334177aAbC3D99C",
+    "ABI": [
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "data",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			}
+		],
+		"name": "getData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			}
+		],
+		"name": "setData",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+],
+    "WEB3_PORT_ADDRESS": "HTTP://127.0.0.1:7545",
+    "TEST_DOCTOR_PRIVATE_ADDRESS": "-----BEGIN RSA PRIVATE KEY-----MIIBOQIBAAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQJAAKPKOn2WDXZ6e3aFiXsn+n1nRXVSLdiM1R+kyYB+LAcN3SQyV+QFkmII6pxEsW+ePRuPeq0yhBTu0k0r43fxgQIhAPkjzylR96UUYdvHIyzKX5AsjBy64+TUgpx9dydE4jYLAiEAlZosF8IS68KJ7CPrqrSmqDq7RIEtYhGYvE6mNZnHxp8CIDSHglRZ/fcGdyOZtybofIGvgtND7G0BCZDpO0hCU9fFAiBPtJ2LZu43yCU9uAGmqKsmdGwz2nM4jdGHeovZgP5MVwIgEXkShiRr9XKdx/ELhRGLqCrni2tpMD9Zr+iQrrYWjBQ=-----END RSA PRIVATE KEY-----",
+    "TEST_PATIENT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQ==-----END PUBLIC KEY-----"
+  }
 }

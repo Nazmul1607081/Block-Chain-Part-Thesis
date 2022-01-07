@@ -4,10 +4,10 @@ const app = express()
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'medi'
+    host: process.env.SQL_HOST_NAME,
+    user: process.env.SQL_USER_NAME,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DB_NAME
 });
 
 
@@ -24,6 +24,8 @@ router.get('/', function (req, res) {
         if (userType === 'doctor') {
             connection.query('SELECT * FROM appointment LEFT JOIN advice ON appointment.appointment_id=advice.appointment_id WHERE appointment.id=?', [id],
                 function (error, results, fields) {
+                    console.log('results')
+                    console.log(results)
                     if (error)
                         res.render(error);
                     else {
@@ -59,6 +61,10 @@ router.get('/', function (req, res) {
         res.redirect('/login')
     }
 
+
+})
+
+router.post('/advice', function (req, res) {
 
 })
 

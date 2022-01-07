@@ -7,9 +7,9 @@ router.get('/', function (req, res) {
     const cookies = req.cookies;
     console.log(cookies);
 
-    if (cookies.isLogin === 'true') {
+    if (cookies.isLogin === 'true' && cookies.wallet_address!== undefined && cookies.wallet_address!== "") {
 
-        if(cookies.user_type=="doctor")
+        if(cookies.user_type==="doctor")
         {
             res.cookie('id', cookies.id);
         }

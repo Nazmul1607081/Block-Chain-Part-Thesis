@@ -17,3 +17,11 @@ $(document).ready(function () {
         imagesPreview(this, "div.preview-images");
     });
 });
+
+function copyText(id) {
+    console.log("copy text")
+  var copyText = document.getElementById(id);
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  navigator.clipboard.writeText(copyText.value);
+}

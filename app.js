@@ -4,13 +4,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const NodeRSA = require('node-rsa');
 const key = new NodeRSA({b: 512});
+const Web3 = require('web3')
+const Firebase = require('firebase')
 
 const mysql = require('mysql');
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'medi'
+    host: process.env.SQL_HOST_NAME,
+    user: process.env.SQL_USER_NAME,
+    password: process.env.SQL_PASSWORD,
+    database: process.env.SQL_DB_NAME
 });
 
 const app = express()
@@ -42,6 +44,7 @@ const login = require('./route/login/login');
 const signup = require('./route/signup/signup');
 const logout = require('./route/logout/logout');
 const advice = require('./route/advice/advice');
+const {add} = require("nodemon/lib/rules");
 
 app.set('view engine', 'ejs')
 
@@ -71,14 +74,13 @@ app.get('/test', (req, res) => {
     let publicKey = key.exportKey('public')
 
     let privateKeyObj = new NodeRSA(privateKey);
-    let publicKeyObj =  new NodeRSA(publicKey);
+    let publicKeyObj = new NodeRSA(publicKey);
 
     let data = "Bangladesh";
     let encryptedData = publicKeyObj.encrypt(data);
-    let decryptedData = privateKeyObj.decrypt(encryptedData,'utf8')
+    let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
     let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
     //let privateKeyFromPublicKey = publicKeyObj.exportKey('private')
-
 
 
     //console.log(privateKey);
@@ -89,6 +91,137 @@ app.get('/test', (req, res) => {
     //console.log(publicKeyFromPrivateKey)
     //console.log(privateKeyFromPublicKey)
 
+
+    res.send('Testing')
+})
+app.get('/test-web3', async (req, res) => {
+
+    const web3 = new Web3('HTTP://127.0.0.1:7545')
+    const id = web3.eth.net.getId();
+    const deplyedABI = [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "addr",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_data",
+                    "type": "string"
+                }
+            ],
+            "name": "setData",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "name": "data",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "addr",
+                    "type": "string"
+                }
+            ],
+            "name": "getData",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+    const deplyedAddress = "0x10f605098A0c66f39f2352aF826BC3Ea594b847e";
+    const contract = new web3.eth.Contract(
+        deplyedABI, deplyedAddress
+    );
+    contract.methods.getData("b").call().then(
+        function (data) {
+            console.log(data);
+            console.log('data');
+        }
+    )
+
+    /*web3.eth.getAccounts().then(function (accounts) {
+        let acc = accounts[0]
+        contract.methods.setData("b", "Bangladesh").send({from: acc}).then(function (tnx) {
+            console.log(tnx)
+        }).catch(function (err) {
+            console.log(err)
+
+        })
+
+    })*/
+
+    res.send('Testing')
+})
+
+app.get('/test-firebase', async (req, res) => {
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAGWCTeMiFUG2c1sKdbUEZB5zhGTLawXQs",
+        authDomain: "medichain-e0025.firebaseapp.com",
+        databaseURL: "https://medichain-e0025.firebaseio.com",
+        projectId: "medichain-e0025",
+        storageBucket: "medichain-e0025.appspot.com",
+        messagingSenderId: "444071301435",
+        appId: "1:444071301435:web:867a53d6663e828e8f671e",
+        measurementId: "G-T57GVVFM1Z"
+    };
+
+    const app = Firebase.initializeApp(firebaseConfig)
+    const db = app.firestore()
+
+    const users = db.collection( 'users');
+
+
+    await db.collection('users').add({
+        'name':"Nazmul",
+        "wallet_address":"JDBKJ(DBKJD"
+    }).then((doc)=>{
+        console.log(doc.path.split('/')[1])
+    })
+
+    const userSnapshot = await db.collection('users').get()
+    const userList = userSnapshot.docs.map(doc => doc.data());
+    console.log(userList)
 
     res.send('Testing')
 })
