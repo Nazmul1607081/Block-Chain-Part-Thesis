@@ -93,9 +93,9 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                                 if (appointmentError) {
                                     res.send(appointmentError)
                                 }
-                                if (storeCloudAddressToBlockChain(cloudAddress, walletAddress)) {
+                                storeCloudAddressToBlockChain(cloudAddress, walletAddress).then(() => {
                                     res.redirect('/home')
-                                }
+                                })
                             })
 
                     })
@@ -112,9 +112,9 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                     res.send(appointmentError)
                 }
                 ///TODO:: store cloud address hashed in the block chain
-                if (storeCloudAddressToBlockChain(cloudAddress, walletAddress)) {
+                storeCloudAddressToBlockChain(cloudAddress, walletAddress).then(() => {
                     res.redirect('/home')
-                }
+                })
 
             })
     }
@@ -125,12 +125,11 @@ router.post('/', upload.single('imagefile'), function (req, res) {
 
 async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
 
-    const app = Firebase.initializeApp(firebaseConfig)
-    const db = app.firestore()
-
-    let success = false;
+    //const app = Firebase.initializeApp(firebaseConfig)
+    const db = Firebase.firestore()
     let publicKeyObj = new NodeRSA(walletAddress);
-    let encryptedData = publicKeyObj.encrypt(cloudAddress, 'base64').toString();
+    console.log("W A:" + walletAddress)
+    let encryptedData = publicKeyObj.encrypt(cloudAddress, 'base64');
 
     const web3 = new Web3(process.env.WEB3_PORT_ADDRESS)
     const deplyedABI = [
@@ -218,7 +217,15 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
     await web3.eth.getAccounts().then(async function (accounts) {
         let acc = accounts[0]
 
-        await db.collection('cyper').add({
+        contract.methods.setData(walletAddress.toString().split('\n')[2], cloudAddress).send({from: acc}).then(function (tnx) {
+            console.log(tnx)
+            console.log(walletAddress.toString().split('\n')[2])
+            console.log(cloudAddress)
+        }).catch(function (err) {
+            console.log(err)
+        })
+
+        /*await db.collection('cyper').add({
             'encrypted_data': encryptedData,
         }).then((doc) => {
             console.log(doc.path)
@@ -231,12 +238,10 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
             }).catch(function (err) {
                 console.log(err)
             })
-        })
+        })*/
 
 
     })
-    return success;
-
 }
 
 

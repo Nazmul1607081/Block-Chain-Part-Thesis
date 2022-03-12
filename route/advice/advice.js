@@ -39,32 +39,22 @@ router.get('/', function (req, res) {
     if (cookies.isLogin === 'true') {
         if (userType === 'doctor') {
 
-            const privateKey =  cookies.private_key
-            let privateKeyObj = new NodeRSA(privateKey);
-            let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
-            console.log(publicKeyFromPrivateKey)
-            //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+
             connection.query('SELECT * FROM  appointment WHERE id=?', [id],
                 async function (error, results, fields) {
-                    console.log('results')
-                    console.log(results)
                     if (error)
                         res.render(error);
                     else {
-
-                       /* results.forEach((res) => {
-                            let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
-                        })*/
-
-                        //const cyperDataFromCloud = await getDataFromBlockChain(walletAddress)
-
-                        res.render('advice', {
-                            data: {
-                                user_name: cookies.user_name,
-                                user_type: cookies.user_type,
-                                advice: results,
-                                id: id,
-                            }
+                        getDataFromBlockChain(walletAddress, cookies).then((secretData) => {
+                            res.render('advice', {
+                                data: {
+                                    user_name: cookies.user_name,
+                                    user_type: cookies.user_type,
+                                    advice: results,
+                                    id: id,
+                                    secret_data: secretData
+                                }
+                            })
                         })
                     }
                 });
@@ -105,9 +95,8 @@ router.post('/', function (req, res) {
 })
 
 
-function getDataFromBlockChain(walletAddresss) {
-    const app = Firebase.initializeApp(firebaseConfig)
-    const db = app.firestore()
+async function getDataFromBlockChain(walletAddress, cookies) {
+    const db = Firebase.firestore()
     const web3 = new Web3(process.env.WEB3_PORT_ADDRESS)
     const deplyedABI = [
         {
@@ -180,27 +169,45 @@ function getDataFromBlockChain(walletAddresss) {
         }
     ];
     const deplyedAddress = process.env.DEPLOYED_ADDRESS;
+    let secretData = "";
+
+    const privateKey = cookies.private_key.toString().replace("*", "/")
+    console.log(privateKey)
+    let privateKeyObj = new NodeRSA(privateKey);
+    /* let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+     console.log(publicKeyFromPrivateKey)
+     //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+
+     ///tes
+     console.log('test')
+     const publicKey = new NodeRSA(publicKeyFromPrivateKey);
+     let encryptedData = publicKey.encrypt("i love u", 'base64').toString();
+     let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+     console.log("Decrypted: " + decryptedData)*/
 
     const contract = new web3.eth.Contract(
         deplyedABI, deplyedAddress
     );
 
-    contract.methods.getData(walletAddresss.toString().split('\n')[2]).call().then(
-        async function (doc) {
-            console.log('data');
-            console.log(doc);
-            const cyperSnapshot = await db.collection('cyper').get()
-            const cyperList = cyperSnapshot.docs.map(doc => doc.data());
-            cyperList.find((cyper,index)=>{
-                if(cyper.doc===doc)
-                {
-                    console.log(cyper.encrypted_data)
-                    return cyper.encrypted_data
+    console.log("getting data...from block chain")
+    await contract.methods.getData(walletAddress.toString().split('\n')[2]).call().then(
+        async function (data) {
+            const cloudAddress = data.toString().replace(" ", "")
+            const cyperSnapshot = await db.collection('data').get()
+            cyperSnapshot.docs.forEach((doc) => {
+                if (doc.id === cloudAddress) {
+                    let data = doc.data()
+                    secretData = data
+                    console.log(secretData)
+                    /*secretData = data.encrypted_data
+                    let decryptedData = privateKeyObj.decrypt(secretData, 'utf8')
+                    console.log('decryptedData')
+                    console.log(decryptedData)*/
                 }
-            })
-            //console.log(cyperList)
+            });
         }
     )
+    return secretData
 }
 
 

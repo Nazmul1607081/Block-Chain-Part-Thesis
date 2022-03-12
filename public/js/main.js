@@ -41,7 +41,10 @@ const filterList = searchTerm => {
 
 function showPrivetKeyAlert(){
     let privateKey = prompt('Private Key');
+    privateKey.replace("/","*")
     document.cookie =  "private_key="+privateKey
+    console.log(privateKey)
+    console.log(document.cookie)
     if(privateKey!=null)
     {
          window.location.href = '/advice'

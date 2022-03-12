@@ -7,7 +7,7 @@
     "SQL_USER_NAME": "root",
     "SQL_DB_NAME": "medi",
     "SQL_HOST_NAME": "localhost",
-    "DEPLOYED_ADDRESS": "0x722E777E784B6e6A7c2Ed2f45334177aAbC3D99C",
+    "DEPLOYED_ADDRESS": "0xB6ABBC0B3d9Bb0B8ddD29A6Cdf7b65E45E36dF93",
     "ABI": [
 	{
 		"inputs": [],
