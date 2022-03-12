@@ -173,17 +173,22 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 
     const privateKey = cookies.private_key.toString().replace("*", "/")
     console.log(privateKey)
-    let privateKeyObj = new NodeRSA(privateKey);
-    /* let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
-     console.log(publicKeyFromPrivateKey)
-     //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
 
-     ///tes
-     console.log('test')
-     const publicKey = new NodeRSA(publicKeyFromPrivateKey);
-     let encryptedData = publicKey.encrypt("i love u", 'base64').toString();
-     let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
-     console.log("Decrypted: " + decryptedData)*/
+    console.log('test')
+    let privateKeyObj = new NodeRSA(privateKey);
+    let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+    console.log(publicKeyFromPrivateKey)
+    //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+
+    ///tes
+
+    const publicKey = new NodeRSA(publicKeyFromPrivateKey);
+    let encryptedData = publicKey.encrypt("i love u", 'base64').toString();
+    let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+    console.log(encryptedData)
+    console.log("Decrypted: " + decryptedData)
+
+
 
     const contract = new web3.eth.Contract(
         deplyedABI, deplyedAddress
@@ -199,10 +204,11 @@ async function getDataFromBlockChain(walletAddress, cookies) {
                     let data = doc.data()
                     secretData = data
                     console.log(secretData)
-                    /*secretData = data.encrypted_data
-                    let decryptedData = privateKeyObj.decrypt(secretData, 'utf8')
+                    let encryptedData = data.secret_data
+                    console.log(encryptedData)
+                    let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
                     console.log('decryptedData')
-                    console.log(decryptedData)*/
+                    console.log(decryptedData)
                 }
             });
         }
