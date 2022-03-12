@@ -18,6 +18,20 @@ const connection = mysql.createConnection({
 const app = express()
 const port = process.env.PORT || 3000
 
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAGWCTeMiFUG2c1sKdbUEZB5zhGTLawXQs",
+    authDomain: "medichain-e0025.firebaseapp.com",
+    databaseURL: "https://medichain-e0025.firebaseio.com",
+    projectId: "medichain-e0025",
+    storageBucket: "medichain-e0025.appspot.com",
+    messagingSenderId: "444071301435",
+    appId: "1:444071301435:web:867a53d6663e828e8f671e",
+    measurementId: "G-T57GVVFM1Z"
+};
+
+Firebase.initializeApp(firebaseConfig)
+
 connection.connect(function (err) {
     if (err) {
         console.error('error connecting: ' + err.stack);
