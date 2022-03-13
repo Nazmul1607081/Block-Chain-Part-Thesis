@@ -10,7 +10,7 @@ const key = new NodeRSA({b: 512});
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
-    password: process.env.SQL_PASSWORD,
+    password: '',
     database: process.env.SQL_DB_NAME
 });
 
@@ -99,75 +99,75 @@ async function getDataFromBlockChain(walletAddress, cookies) {
     const db = Firebase.firestore()
     const web3 = new Web3(process.env.WEB3_PORT_ADDRESS)
     const deplyedABI = [
-        {
-            "inputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "name": "data",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "addr",
-                    "type": "string"
-                }
-            ],
-            "name": "getData",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "addr",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_data",
-                    "type": "string"
-                }
-            ],
-            "name": "setData",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ];
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "data",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			}
+		],
+		"name": "getData",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			}
+		],
+		"name": "setData",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
     const deplyedAddress = process.env.DEPLOYED_ADDRESS;
     let secretData = "";
 
@@ -206,9 +206,9 @@ async function getDataFromBlockChain(walletAddress, cookies) {
                     console.log(secretData)
                     let encryptedData = data.secret_data
                     console.log(encryptedData)
-                    let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
-                    console.log('decryptedData')
-                    console.log(decryptedData)
+                    //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+                    //console.log('decryptedData')
+                   // console.log(decryptedData)
                 }
             });
         }

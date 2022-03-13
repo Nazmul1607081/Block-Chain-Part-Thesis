@@ -33,7 +33,7 @@
         <div class="form-data">
             <div class="form-head">
                 <h2 style="color: black">Advice</h2>
-                <h2> secret data: <%=data.secret_data.secret_data%></h2>
+
             </div>
             <% if( data.user_type === 'doctor') {
             %>
@@ -65,13 +65,20 @@
                 <div>
                 <% data.advice.forEach((adv)=>{
                 %>
-                    <h3>
-                        <%= adv.details %>
-                        <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+
+                    <h3 class="details">
+
+                        Problem type: <mark><%= adv.details %></mark>
                     </h3>
+                    <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+                    <hr class="new2">
+
                     <h3>
-                        <%= adv.advice %>
+                        Here is doctor advices
                     </h3>
+                      <%= adv.advice %>
+                      <hr class="new2">
+
                 <%
                 }) %>
             </div>

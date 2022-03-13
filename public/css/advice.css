@@ -91,3 +91,20 @@ label {
     width: 50px;
     display: inline-block;
 }
+h3.details
+{
+    font-size: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+img.profile-img
+{
+     width:150px; /*width of your image*/
+     height:100px; /*height of your image*/
+     margin-bottom:20px;
+
+}
+hr.new2 {
+  border-top: 5px dashed black;
+}
