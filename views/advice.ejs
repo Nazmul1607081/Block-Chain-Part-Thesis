@@ -40,15 +40,20 @@
                 <div>
                     <% data.advice.forEach((adv)=>{
                     %>
-                        <h3>
-                            <%= adv.details %>
-                        </h3>
+                       <label class="lb">Problem Type:
+                       <span>
+
+                        <%= adv.details %>
+
+                        </label>
                         <form action="/advice/?aid=<%= adv.appointment_id %>" method="POST">
                             <div class="row form-row">
+                                <label class="lb">Report Image: </label>
                                 <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
-                                <label>Advice: </label>
                                 <span>
-                                <input type="text" name="advice" value="<%= adv.advice %>" placeholder="Give Advice"
+                                <label class="lb">Advice: </label>
+                                <span>
+                                <input class ="in" type="text" name="advice" value="<%= adv.advice %>" placeholder="Give Advice"
                                        class="form-control">
                             </span>
                                 <input type="submit" value="GO">
@@ -73,11 +78,11 @@
                     <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
                     <hr class="new2">
 
-                    <h3>
+                    <h3 class="advice">
                         Here is doctor advices
-                    </h3>
                       <%= adv.advice %>
                       <hr class="new2">
+                      </h3>
 
                 <%
                 }) %>
