@@ -3,11 +3,11 @@
     "MONGO_ATLAS_PW": "nazmul81",
     "JWT_PRIVATE_KEY": "secret",
     "HOST": "http://localhost:",
-    "SQL_PASSWORD": 1234,
+    "SQL_PASSWORD": "",
     "SQL_USER_NAME": "root",
     "SQL_DB_NAME": "medi",
     "SQL_HOST_NAME": "localhost",
-    "DEPLOYED_ADDRESS": "0xB6ABBC0B3d9Bb0B8ddD29A6Cdf7b65E45E36dF93",
+    "DEPLOYED_ADDRESS": "0x4C38E9ab990719EE3d8aC86B00AA2efef4a525e7",
     "ABI": [
 	{
 		"inputs": [],
