@@ -59,6 +59,13 @@
                         <%= appointment.details %>
                             </span>
                         </label>
+
+                        <label class="lb">Problem Type:
+                            <span>
+
+                        <%= appointment.contact %>
+                            </span>
+                        </label>
                         <form action="/advice/?aid=<%= appointment.appointment_id %>" method="POST">
                             <div class="row form-row">
                                 <label class="lb">Report Image: </label>

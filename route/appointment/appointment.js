@@ -187,7 +187,7 @@ async function storeCloudAddressToBlockChain(cloudAddress, access_time, walletAd
 				"type": "uint256"
 			}
 		],
-		"name": "getCloudData",
+		"name": "getCloudAddress",
 		"outputs": [
 			{
 				"internalType": "string",

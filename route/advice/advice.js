@@ -58,7 +58,7 @@ router.get('/', function (req, res) {
                                     }
                                 })
                             } else {
-                                res.render(error);
+                                res.send("error");
                             }
                         })
                     }
@@ -108,36 +108,6 @@ async function getDataFromBlockChain(walletAddress, cookies) {
     const db = Firebase.firestore()
     const web3 = new Web3(process.env.WEB3_PORT_ADDRESS)
     const deplyedABI = [
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "addr",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_cloudAddress",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_time",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_patientUserName",
-				"type": "string"
-			}
-		],
-		"name": "setData",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
 	{
 		"inputs": [],
 		"payable": false,
@@ -189,7 +159,7 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 				"type": "uint256"
 			}
 		],
-		"name": "getCloudData",
+		"name": "getCloudAddress",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -226,6 +196,36 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_patientUserName",
+				"type": "string"
+			}
+		],
+		"name": "setData",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
 ];
     const deplyedAddress = process.env.DEPLOYED_ADDRESS;
@@ -254,7 +254,7 @@ async function getDataFromBlockChain(walletAddress, cookies) {
     const d = new Date();
     const sec = seconds_since_epoch(d);
     console.log("getting data...from block chain")
-    await contract.methods.getCloudData(walletAddress.toString().split('\n')[2], sec).call().then(
+    await contract.methods.getCloudAddress(walletAddress.toString().split('\n')[2], sec).call().then(
         async function (data) {
             console.log(data)
             if (data === "Time expired") {
@@ -265,13 +265,17 @@ async function getDataFromBlockChain(walletAddress, cookies) {
                 for (const doc of cyperSnapshot.docs) {
                     if (doc.id === cloudAddress) {
                         let data = doc.data()
+						console.log(data)
                         let temperatureData = data.temperature
                         let pulseData = data.temperature
                         try {
+							console.log('before decryption')
                             temperatureData = privateKeyObj.decrypt(temperatureData, 'utf8')
                             pulseData = privateKeyObj.decrypt(pulseData, 'utf8')
-                            await contract.methods.getPatientUserName(walletAddress.toString().split('\n')[2], sec).call().then((patientUserName) => {
-                                cloudData = {
+							console.log(temperatureData)
+                            await contract.methods.getPatientUserName(walletAddress.toString().split('\n')[2], sec).call().then(function (patientUserName) {
+                                console.log(patientUserName)
+								cloudData = {
                                     temperature: temperatureData,
                                     pulse: pulseData,
                                     patientUserName: patientUserName
