@@ -7,8 +7,58 @@
     "SQL_USER_NAME": "root",
     "SQL_DB_NAME": "medi",
     "SQL_HOST_NAME": "localhost",
-    "DEPLOYED_ADDRESS": "0x4C38E9ab990719EE3d8aC86B00AA2efef4a525e7",
+    "DEPLOYED_ADDRESS": "0x14dEe5C9114ACe8ae2291fAB229176781836a23A",
     "ABI": [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			}
+		],
+		"name": "setCloudAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			}
+		],
+		"name": "setPatientData",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"inputs": [],
 		"payable": false,
@@ -24,7 +74,43 @@
 				"type": "string"
 			}
 		],
-		"name": "data",
+		"name": "dataMapping",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "patinetData",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expireTime",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			}
+		],
+		"name": "getCloudAddress",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -43,9 +129,14 @@
 				"internalType": "string",
 				"name": "addr",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
 			}
 		],
-		"name": "getData",
+		"name": "getPatientData",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -56,30 +147,10 @@
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "addr",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_data",
-				"type": "string"
-			}
-		],
-		"name": "setData",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
 	}
 ],
     "WEB3_PORT_ADDRESS": "HTTP://127.0.0.1:7545",
-    "TEST_DOCTOR_PRIVATE_ADDRESS": "-----BEGIN RSA PRIVATE KEY-----MIIBOQIBAAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQJAAKPKOn2WDXZ6e3aFiXsn+n1nRXVSLdiM1R+kyYB+LAcN3SQyV+QFkmII6pxEsW+ePRuPeq0yhBTu0k0r43fxgQIhAPkjzylR96UUYdvHIyzKX5AsjBy64+TUgpx9dydE4jYLAiEAlZosF8IS68KJ7CPrqrSmqDq7RIEtYhGYvE6mNZnHxp8CIDSHglRZ/fcGdyOZtybofIGvgtND7G0BCZDpO0hCU9fFAiBPtJ2LZu43yCU9uAGmqKsmdGwz2nM4jdGHeovZgP5MVwIgEXkShiRr9XKdx/ELhRGLqCrni2tpMD9Zr+iQrrYWjBQ=-----END RSA PRIVATE KEY-----",
+    "TEST_DOCTOR_PRIVATE_ADDRESS": "-----BEGIN RSA PRIVATE KEY-----MIIBPAIBAAJBAMVOQWqHfhxnfamFpsomrYivvdStXBMvwU3y93priGbFYbfTU3zoUGIERDCgnFgJo351O1UUUS+UrOO38AEu00ECAwEAAQJBAJFOfZy/5l9y1DfppxkPfRPCIbKkbb/vlpQakKnG0fCkttgWgjEBpV1QBCsaA/QlTJVVRTtMJiqOifJ73l0MYAECIQDxpW4b4KKPk4K4QqhULDiZcfCuJ0pGJJnY8aWEGYcOwQIhANEGkMMSiaoMFYQ2KDFv6JtJTutSn7Qopvfb9H3WnWSBAiEAr6RjSHgbMOkzluM8nxIVgdND8hI09o8cFIhwmnhDpwECIAkgzkWWk6h3aqEhdFPkXTYa13VzYEIP3GrKkjzEmI8BAiEA48DSrBPvKRBTSjRrgMzL8rmFMYp1VrX+ts4Me1H1pt0=-----END RSA PRIVATE KEY-----",
     "TEST_PATIENT_PUBLIC_KEY": "-----BEGIN PUBLIC KEY-----MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJGX4gbyQrXOLGRyqqtIaJMBkMQVAtCl77XBssvN7q9Rdgbsku8IT2vnmkUAAB9NCtOLdQA5crPW0QFxFlPZEtUCAwEAAQ==-----END PUBLIC KEY-----",
      "FIREBASE_CONFIG": {
     "apiKey": "AIzaSyAGWCTeMiFUG2c1sKdbUEZB5zhGTLawXQs",

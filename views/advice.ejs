@@ -84,55 +84,77 @@
             <% if( data.user_type === 'doctor') {
             %>
                 <div>
-                    <% data.advice.forEach((adv)=>{
-                    %>
-                       <label class="lb">Problem Type:
-                       <span>
+                    <label class="lb">Temperature Data:
+                            <span>
 
-                        <%= adv.details %>
-
+                        <%= data.cloud_data.temperature %>
+                            </span>
                         </label>
-                        <form action="/advice/?aid=<%= adv.appointment_id %>" method="POST">
+                    <label class="lb">Temperature Data:
+                            <span>
+
+                        <%= data.cloud_data.pulse %>
+                            </span>
+                        </label>
+                    <% data.advice.forEach((appointment)=>{
+                    if(appointment.user_name === data.cloud_data.patientUserName){
+                    %>
+                        <label class="lb">Problem Type:
+                            <span>
+
+                        <%= appointment.details %>
+                            </span>
+                        </label>
+
+                        <label class="lb">Problem Type:
+                            <span>
+
+                        <%= appointment.contact %>
+                            </span>
+                        </label>
+                        <form action="/advice/?aid=<%= appointment.appointment_id %>" method="POST">
                             <div class="row form-row">
                                 <label class="lb">Report Image: </label>
-                                <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+                                <img alt="image" class="profile-img" src=" <%= appointment.image %>"/>
                                 <span>
                                 <label class="lb">Advice: </label>
                                 <span>
-                                <input class ="in" type="text" name="advice" value="<%= adv.advice %>" placeholder="Give Advice"
+                                <input class="in" type="text" name="advice" value="<%= appointment.advice %>"
+                                       placeholder="Give Advice"
                                        class="form-control">
                             </span>
                                 <input type="submit" value="GO">
+                                </span>
                             </div>
 
 
                         </form>
                     <%
-                    }) %>
+                    } }) %>
                 </div>
             <%
             }else{
             %>
                 <div>
-                <% data.advice.forEach((adv)=>{
-                %>
+                    <% data.advice.forEach((adv)=>{
+                    %>
 
-                    <h3 class="details">
+                        <h3 class="details">
 
-                        Problem type: <mark><%= adv.details %></mark>
-                    </h3>
-                    <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
-                    <hr class="new2">
+                            Problem type:
+                            <mark><%= adv.details %></mark>
+                        </h3>
+                        <img alt="image" class="profile-img" src=" <%= adv.image %>"/>
+                        <hr class="new2">
 
-                    <h3 class="advice">
-                        Here is doctor advices
-                      <%= adv.advice %>
-                      <hr class="new2">
-                      </h3>
+                        <h3 class="advice">
+                            <%= adv.advice %>
+                            <hr class="new2">
+                        </h3>
 
-                <%
-                }) %>
-            </div>
+                    <%
+                    }) %>
+                </div>
             <%
             } %>
         </div>

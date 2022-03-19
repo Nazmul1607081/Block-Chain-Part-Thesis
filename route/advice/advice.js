@@ -10,7 +10,7 @@ const key = new NodeRSA({b: 512});
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
-    password: '',
+    password: process.env.SQL_PASSWORD,
     database: process.env.SQL_DB_NAME
 });
 
@@ -38,23 +38,28 @@ router.get('/', function (req, res) {
 
     if (cookies.isLogin === 'true') {
         if (userType === 'doctor') {
-
-
             connection.query('SELECT * FROM  appointment WHERE id=?', [id],
                 async function (error, results, fields) {
                     if (error)
                         res.render(error);
                     else {
-                        getDataFromBlockChain(walletAddress, cookies).then((secretData) => {
-                            res.render('advice', {
-                                data: {
-                                    user_name: cookies.user_name,
-                                    user_type: cookies.user_type,
-                                    advice: results,
-                                    id: id,
-                                    secret_data: secretData
-                                }
-                            })
+                        getDataFromBlockChain(walletAddress, cookies).then((cloudData) => {
+                            if (cloudData === "Time expired") {
+                                res.send("Time Expired")
+                            } else if (cloudData !== "ERR") {
+                                console.log(cloudData)
+                                res.render('advice', {
+                                    data: {
+                                        user_name: cookies.user_name,
+                                        user_type: cookies.user_type,
+                                        advice: results,
+                                        id: id,
+                                        cloud_data: cloudData
+                                    }
+                                })
+                            } else {
+                                res.send("error");
+                            }
                         })
                     }
                 });
@@ -94,6 +99,10 @@ router.post('/', function (req, res) {
 
 })
 
+function seconds_since_epoch(d) {
+    return Math.floor(d / 1000);
+}
+
 
 async function getDataFromBlockChain(walletAddress, cookies) {
     const db = Firebase.firestore()
@@ -114,7 +123,43 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 				"type": "string"
 			}
 		],
-		"name": "data",
+		"name": "dataMapping",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expireTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "patientUserName",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			}
+		],
+		"name": "getCloudAddress",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -133,9 +178,14 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 				"internalType": "string",
 				"name": "addr",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
 			}
 		],
-		"name": "getData",
+		"name": "getPatientUserName",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -157,7 +207,17 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 			},
 			{
 				"internalType": "string",
-				"name": "_data",
+				"name": "_cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_patientUserName",
 				"type": "string"
 			}
 		],
@@ -169,51 +229,69 @@ async function getDataFromBlockChain(walletAddress, cookies) {
 	}
 ];
     const deplyedAddress = process.env.DEPLOYED_ADDRESS;
-    let secretData = "";
+    let cloudData = "";
 
     const privateKey = cookies.private_key.toString().replace("*", "/")
-    console.log(privateKey)
+    //console.log(privateKey)
 
-    console.log('test')
     let privateKeyObj = new NodeRSA(privateKey);
-    let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
-    console.log(publicKeyFromPrivateKey)
+    //let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+    //console.log(publicKeyFromPrivateKey)
     //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
 
     ///tes
 
-    const publicKey = new NodeRSA(publicKeyFromPrivateKey);
+    /*const publicKey = new NodeRSA(publicKeyFromPrivateKey);
     let encryptedData = publicKey.encrypt("i love u", 'base64').toString();
     let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
     console.log(encryptedData)
-    console.log("Decrypted: " + decryptedData)
-
+    console.log("Decrypted: " + decryptedData)*/
 
 
     const contract = new web3.eth.Contract(
         deplyedABI, deplyedAddress
     );
-
+    const d = new Date();
+    const sec = seconds_since_epoch(d);
     console.log("getting data...from block chain")
-    await contract.methods.getData(walletAddress.toString().split('\n')[2]).call().then(
+    await contract.methods.getCloudAddress(walletAddress.toString().split('\n')[2], sec).call().then(
         async function (data) {
-            const cloudAddress = data.toString().replace(" ", "")
-            const cyperSnapshot = await db.collection('data').get()
-            cyperSnapshot.docs.forEach((doc) => {
-                if (doc.id === cloudAddress) {
-                    let data = doc.data()
-                    secretData = data
-                    console.log(secretData)
-                    let encryptedData = data.secret_data
-                    console.log(encryptedData)
-                    //let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
-                    //console.log('decryptedData')
-                   // console.log(decryptedData)
+            console.log(data)
+            if (data === "Time expired") {
+                cloudData = "Time expired";
+            } else {
+                const cloudAddress = data.toString().replace(" ", "")
+                const cyperSnapshot = await db.collection('data').get()
+                for (const doc of cyperSnapshot.docs) {
+                    if (doc.id === cloudAddress) {
+                        let data = doc.data()
+						console.log(data)
+                        let temperatureData = data.temperature
+                        let pulseData = data.temperature
+                        try {
+							console.log('before decryption')
+                            temperatureData = privateKeyObj.decrypt(temperatureData, 'utf8')
+                            pulseData = privateKeyObj.decrypt(pulseData, 'utf8')
+							console.log(temperatureData)
+                            await contract.methods.getPatientUserName(walletAddress.toString().split('\n')[2], sec).call().then(function (patientUserName) {
+                                console.log(patientUserName)
+								cloudData = {
+                                    temperature: temperatureData,
+                                    pulse: pulseData,
+                                    patientUserName: patientUserName
+                                }
+                            })
+
+                        } catch (err) {
+                            cloudData = "ERR"
+                        }
+
+                    }
                 }
-            });
+            }
         }
     )
-    return secretData
+    return cloudData
 }
 
 
