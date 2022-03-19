@@ -15,6 +15,26 @@ body {
     margin-left: 500px;
     
 }*/
+.nav-back {
+    background: rgba(0, 255, 255, 0.8);
+}
+
+.navbar-brand {
+    color: black;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: #fff;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
 
 .form-data {
     margin-top: 15%;
