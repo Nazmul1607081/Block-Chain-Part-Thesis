@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
-    password: '',
+    password: process.env.SQL_PASSWORD,
     database: process.env.SQL_DB_NAME
 });
 

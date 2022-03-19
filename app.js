@@ -11,7 +11,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
-    password: '',
+    password: process.env.SQL_PASSWORD,
     database: process.env.SQL_DB_NAME
 });
 
@@ -236,6 +236,48 @@ app.get('/test-firebase', async (req, res) => {
     const userSnapshot = await db.collection('users').get()
     const userList = userSnapshot.docs.map(doc => doc.data());
     console.log(userList)
+
+    res.send('Testing')
+})
+
+app.get('/data-encrypt', (req, res) => {
+
+    //let privateKey = key.exportKey('private')
+    //let publicKey = key.exportKey('public')
+
+    let privateKey = "-----BEGIN RSA PRIVATE KEY-----MIIBPAIBAAJBAMVOQWqHfhxnfamFpsomrYivvdStXBMvwU3y93priGbFYbfTU3zoUGIERDCgnFgJo351O1UUUS+UrOO38AEu00ECAwEAAQJBAJFOfZy/5l9y1DfppxkPfRPCIbKkbb/vlpQakKnG0fCkttgWgjEBpV1QBCsaA/QlTJVVRTtMJiqOifJ73l0MYAECIQDxpW4b4KKPk4K4QqhULDiZcfCuJ0pGJJnY8aWEGYcOwQIhANEGkMMSiaoMFYQ2KDFv6JtJTutSn7Qopvfb9H3WnWSBAiEAr6RjSHgbMOkzluM8nxIVgdND8hI09o8cFIhwmnhDpwECIAkgzkWWk6h3aqEhdFPkXTYa13VzYEIP3GrKkjzEmI8BAiEA48DSrBPvKRBTSjRrgMzL8rmFMYp1VrX+ts4Me1H1pt0=-----END RSA PRIVATE KEY-----"
+     let privateKeyObj = new NodeRSA(privateKey);
+
+    let publicKey = privateKeyObj.exportKey('public')
+    let publicKeyObj = new NodeRSA(publicKey);
+
+    let data = "time->12-10-2022 08:10PM, temperature->98F" +
+        "time->12-10-2022 08:10PM, temperature->98F" +
+        "time->12-10-2022 08:15PM, temperature->99F" +
+        "time->12-10-2022 08:20PM, temperature->98F" +
+        "time->12-10-2022 08:25PM, temperature->100F" +
+        "time->12-10-2022 08:30PM, temperature->98F";
+
+    let data1 = "time->12-10-2022 08:10PM, pulse->72bps" +
+        "time->12-10-2022 08:10PM, pulse->72bps" +
+        "time->12-10-2022 08:15PM, pulse->75bps" +
+        "time->12-10-2022 08:20PM, pulse->74bps" +
+        "time->12-10-2022 08:25PM, pulse->72bps" +
+        "time->12-10-2022 08:30PM, pulse->70bpsF";
+    let encryptedData = publicKeyObj.encrypt(data1,'base64').toString();
+    let decryptedData = privateKeyObj.decrypt(encryptedData, 'utf8')
+    let publicKeyFromPrivateKey = privateKeyObj.exportKey('public')
+    //let privateKeyFromPublicKey = publicKeyObj.exportKey('private')
+
+
+    //console.log(privateKey);
+    //console.log(publicKey);
+    //console.log(data)
+    console.log(encryptedData)
+    //console.log(decryptedData)
+    //console.log(publicKeyFromPrivateKey)
+    //console.log(privateKeyFromPublicKey)
+
 
     res.send('Testing')
 })

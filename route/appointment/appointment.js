@@ -23,7 +23,7 @@ const firebaseConfig = {
 const connection = mysql.createConnection({
     host: process.env.SQL_HOST_NAME,
     user: process.env.SQL_USER_NAME,
-    password: '',
+    password: process.env.SQL_PASSWORD,
     database: process.env.SQL_DB_NAME
 });
 
@@ -57,6 +57,7 @@ const upload = multer({storage: storage, limits: 1024 * 1024 * 5});
 router.post('/', upload.single('imagefile'), function (req, res) {
     let contact = req.body.contact;
     let details = req.body.details;
+    let access_time = req.body.access_time;
     let cloudAddress = req.body.cloud_address;
     let image = process.env.HOST + (process.env.PORT | 3000) + "/" + req.file.path
     let userType = req.cookies.user_type;
@@ -93,7 +94,7 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                                 if (appointmentError) {
                                     res.send(appointmentError)
                                 }
-                                storeCloudAddressToBlockChain(cloudAddress, walletAddress).then(() => {
+                                storeCloudAddressToBlockChain(cloudAddress, access_time, walletAddress, userName).then(() => {
                                     res.redirect('/home')
                                 })
                             })
@@ -111,8 +112,7 @@ router.post('/', upload.single('imagefile'), function (req, res) {
                 if (appointmentError) {
                     res.send(appointmentError)
                 }
-                ///TODO:: store cloud address hashed in the block chain
-                storeCloudAddressToBlockChain(cloudAddress, walletAddress).then(() => {
+                storeCloudAddressToBlockChain(cloudAddress, access_time, walletAddress, userName).then(() => {
                     res.redirect('/home')
                 })
 
@@ -122,8 +122,11 @@ router.post('/', upload.single('imagefile'), function (req, res) {
 
 })
 
+function seconds_since_epoch(d) {
+    return Math.floor(d / 1000);
+}
 
-async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
+async function storeCloudAddressToBlockChain(cloudAddress, access_time, walletAddress, patientUserName) {
 
     //const app = Firebase.initializeApp(firebaseConfig)
     const db = Firebase.firestore()
@@ -148,7 +151,43 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
 				"type": "string"
 			}
 		],
-		"name": "data",
+		"name": "dataMapping",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expireTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "patientUserName",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "addr",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			}
+		],
+		"name": "getCloudData",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -167,9 +206,14 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
 				"internalType": "string",
 				"name": "addr",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
 			}
 		],
-		"name": "getData",
+		"name": "getPatientUserName",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -191,7 +235,17 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
 			},
 			{
 				"internalType": "string",
-				"name": "_data",
+				"name": "_cloudAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_patientUserName",
 				"type": "string"
 			}
 		],
@@ -214,10 +268,15 @@ async function storeCloudAddressToBlockChain(cloudAddress, walletAddress) {
         }
     )*/
 
+    const d = new Date();
+    const sec = seconds_since_epoch(d);
+
+
     await web3.eth.getAccounts().then(async function (accounts) {
         let acc = accounts[0]
+        console.log(sec)
 
-        contract.methods.setData(walletAddress.toString().split('\n')[2], cloudAddress).send({from: acc}).then(function (tnx) {
+        await contract.methods.setData(walletAddress.toString().split('\n')[2], cloudAddress, sec + access_time * 60, patientUserName).send({from: acc}).then(function (tnx) {
             console.log(tnx)
             console.log(walletAddress.toString().split('\n')[2])
             console.log(cloudAddress)
