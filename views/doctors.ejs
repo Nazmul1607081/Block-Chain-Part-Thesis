@@ -64,6 +64,7 @@
         }
     }
 </script>
+<script src="/js/signup.js"></script>
 
 <section>
     <div class="container">
@@ -91,6 +92,9 @@
                         <a href="appointment/?department=<%= user.department %>&user_name=<%= user.user_name %>&id=<%= user.id %>">
                             <button class="btn btn-primary">Appointment</button>
                         </a>
+                         <label for="walletAddress">Wallet Address: </label><input id="walletAddress" hidden
+                                                                              value="<%= user.wallet_address %>">
+                        <button onclick="copyText('walletAddress')">Copy text</button>
                         <ul class="social-media">
                             <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
                             <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>

@@ -282,4 +282,17 @@ app.get('/data-encrypt', (req, res) => {
     res.send('Testing')
 })
 
+app.post('/encrypt', function (request, response) {
+
+    let publicKey = request.body.wallet_address;
+    let data = request.body.data;
+    let publicKeyObj = new NodeRSA(publicKey);
+    let encryptedData = publicKeyObj.encrypt(data, 'base64').toString();
+    response.send({
+        public_key: publicKey,
+        encrypted_data: encryptedData,
+        data: data
+    });    // echo the result back
+});
+
 app.listen(port, () => console.log(`App listening on the port ${port}`))
