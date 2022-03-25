@@ -70,7 +70,66 @@ body {
     box-shadow: none;
     border: 3px solid#138496;
 }
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+  height: 200px;
+  background-color: rgba(155,136,217,1);
+}
+.myCard{
 
+    position: relative;
+    margin-top: 200px;
+    margin-left: 200px;
+    padding-top: 20px;
+    display: -ms-flexbox;
+    display: flex;
+    flex: left;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    width:60%;
+    height:200px;
+    word-wrap: break-word;
+    background-color: red;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+}
+
+.myCard2{
+
+    position: relative;
+    margin-top: 200px;
+    margin-left: 200px;
+    padding-top: 20px;
+    display: -ms-flexbox;
+    display: flex;
+    flex: left;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    width:60%;
+    height:200px;
+    word-wrap: break-word;
+    background-color: red;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+hr.hrl
+{
+	border: 2px solid black;
+}
 input[type=submit] {
     width: 220px;
     background: white;
