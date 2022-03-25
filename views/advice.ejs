@@ -85,32 +85,26 @@
             %>
                 <div>
                     <label class="lb">Temperature Data:
-                            <span>
-
                         <%= data.cloud_data.temperature %>
-                            </span>
                         </label>
-                    <label class="lb">Temperature Data:
-                            <span>
-
+                    <label class="lb">Pulse Data:
                         <%= data.cloud_data.pulse %>
-                            </span>
                         </label>
                     <% data.advice.forEach((appointment)=>{
                     if(appointment.user_name === data.cloud_data.patientUserName){
                     %>
                         <label class="lb">Problem Type:
-                            <span>
+
 
                         <%= appointment.details %>
-                            </span>
+
                         </label>
 
                         <label class="lb">Problem Type:
-                            <span>
+
 
                         <%= appointment.contact %>
-                            </span>
+
                         </label>
                         <form action="/advice/?aid=<%= appointment.appointment_id %>" method="POST">
                             <div class="row form-row">

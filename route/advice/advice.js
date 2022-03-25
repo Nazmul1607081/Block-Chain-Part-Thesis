@@ -48,6 +48,7 @@ router.get('/', function (req, res) {
                                 res.send("Time Expired")
                             } else if (cloudData !== "ERR") {
                                 console.log(cloudData)
+								res.cookie('private_address', '');
                                 res.render('advice', {
                                     data: {
                                         user_name: cookies.user_name,
@@ -267,7 +268,7 @@ async function getDataFromBlockChain(walletAddress, cookies) {
                         let data = doc.data()
 						console.log(data)
                         let temperatureData = data.temperature
-                        let pulseData = data.temperature
+                        let pulseData = data.pulse
                         try {
 							console.log('before decryption')
                             temperatureData = privateKeyObj.decrypt(temperatureData, 'utf8')
